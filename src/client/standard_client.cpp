@@ -48,7 +48,7 @@ void StandardClient::OnNextEnd(StateUpdateEventData const& event_data) {
     engine_->OnNextEnd(event_data.game_state);
 }
 moves::Move StandardClient::OnMyTurn(StateUpdateEventData const& event_data) {
-    int index = event_data.game_state.shot / 2;
+    int index = event_data.game_state.shot / 4;
     return engine_->OnMyTurn(
         players_[players_index_[index]], event_data.game_state, event_data.last_shot
     );
