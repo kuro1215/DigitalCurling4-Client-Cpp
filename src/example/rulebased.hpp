@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <digitalcurling/simulators/plugin_simulator.hpp>
 #include "digitalcurling/client/i_factory_creator.hpp"
 #include "digitalcurling/client/i_thinking_engine.hpp"
 
@@ -49,7 +50,7 @@ private:
     Team team_;
     GameRule game_rule_;
     GameSetting game_setting_;
-    std::unique_ptr<simulators::IInvertibleSimulator> simulator_;
+    std::unique_ptr<simulators::InvertiblePluginSimulator> simulator_;
 };
 
 } // namespace digitalcurling::client

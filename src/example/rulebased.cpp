@@ -14,13 +14,13 @@ std::vector<std::uint8_t> RulebasedEngine::OnInit(
     std::vector<std::unique_ptr<players::IPlayerFactory>> const& players
 ) {
     auto sim = simulator->CreateSimulator();
-    auto inv_sim = dynamic_cast<simulators::IInvertibleSimulator*>(sim.get());
+    auto inv_sim = dynamic_cast<simulators::InvertiblePluginSimulator*>(sim.get());
     if (inv_sim == nullptr) {
         throw std::runtime_error("Simulator is not invertible simulator.");
     }
 
     sim.release();
-    simulator_ = std::move(std::unique_ptr<simulators::IInvertibleSimulator>(inv_sim));
+    simulator_ = std::move(std::unique_ptr<simulators::InvertiblePluginSimulator>(inv_sim));
 
     game_rule_ = game_rule;
     game_setting_ = game_setting;
@@ -67,7 +67,7 @@ moves::Move RulebasedEngine::OnMyTurn(
 
                 auto current_player = player_factory->CreatePlayer();
                 auto stones = ConvertToSimulatorStones(game_state.stones);
-                auto stone_no = static_cast<std::uint8_t>(team_) * 8 + (game_state.shot / 2 + 1);
+                auto stone_no = static_cast<std::uint8_t>(team_) * 8 + ((game_state.shot + 1) / 2);
 
                 constexpr std::uint32_t kTrials = 50;
                 std::array<std::uint32_t, candidate_shots.size()> success_counts{{}};
