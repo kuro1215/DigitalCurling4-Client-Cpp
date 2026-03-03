@@ -43,9 +43,9 @@ int main(int argc, char const* argv[])
     int team_idx;
     app.add_option("--host", host, "The URL of the server to connect to")->default_str("");
     app.add_option("--id", id, "The game/competition ID")->default_str("");
+    app.add_option("--auth-id", auth_id, "The authentication ID")->default_str("");
+    app.add_option("--auth-pw", auth_pw, "The authentication password")->default_str("");
     app.add_option("--team", team_idx, "The team index (0 or 1)")->default_val(0)->check(CLI::Range(0,1))->force_callback();
-    app.add_option("--auth-id", auth_id, "The authentication ID")->default_str("user")->force_callback();
-    app.add_option("--auth-pw", auth_pw, "The authentication password")->default_str("password")->force_callback();
 
 #ifdef DIGITALCURLING_CLIENT_USE_LOADER
     std::string plugin_dir;
@@ -54,7 +54,7 @@ int main(int argc, char const* argv[])
 
     CLI11_PARSE(app, argc, argv);
 
-    if (host.empty() || id.empty()) {
+    if (host.empty() || id.empty() || auth_id.empty() || auth_pw.empty()) {
         if (is_enable_console) {
             if (host.empty()) {
                 id = "";
@@ -65,8 +65,16 @@ int main(int argc, char const* argv[])
                 std::cout << "Enter ID: ";
                 std::getline(std::cin, id);
             }
+            if (auth_id.empty()) {
+                std::cout << "Enter authentication ID: ";
+                std::getline(std::cin, auth_id);
+            }
+            if (auth_pw.empty()) {
+                std::cout << "Enter authentication password: ";
+                std::getline(std::cin, auth_pw);
+            }
         } else {
-            std::cerr << "[Error] Host and ID must be specified." << std::endl;
+            std::cerr << "[Error] Host, ID, authentication ID and password must be specified." << std::endl;
             std::cerr << app.help() << std::endl;
             return 1;
         }
